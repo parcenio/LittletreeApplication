@@ -17,7 +17,7 @@ public class PedidoDAO {
     private static final String INSERT_SQL = "Insert into pedido "
             + "(nomeProduto, quantidade, valor)"
             + "values ('%s', %d, %d)";
-    private static final String UPDATE_SQL = "Update pedido"
+    private static final String UPDATE_SQL = "Update pedido "
             + "set nomeProduto = '%s', quantidade = %d, valor = %d "
             + "where id = %d";
     private static final String DELETE_SQL = "Delete from pedido "

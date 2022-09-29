@@ -122,18 +122,5 @@ public class VendasDAO {
         }
         return lista;
     }
-    
-    //  IMPLPLEMENTANDO
-    public static void baixaEstoque(String produtoNome) {
-        int count = 0;
-        List<Pedido> listaPedido = PedidoDAO.selecionarTodos();
-        List<Littletree> listaProdutos = ProdutoDAO.selecionarTodos();
-
-        for (Pedido p : listaPedido){
-            if(p.getNomeProduto().equals(produtoNome)){
-                count++;
-            }
-        }
-
-    }
+   
 }

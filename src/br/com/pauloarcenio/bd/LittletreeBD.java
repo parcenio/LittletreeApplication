@@ -27,7 +27,7 @@ public class LittletreeBD {
                 + "(id int not null auto_increment primary key, "
                 + "idCliente int not null, "
                 + "nomeCliente varchar(20) not null,"
-                + "descricao varchar(50) not null,"
+                + "descricao varchar(100) not null,"
                 + "valorTotal int not null,"
                 + "data date not null,"
                 + "foreign key (idCliente) references cliente(id))";

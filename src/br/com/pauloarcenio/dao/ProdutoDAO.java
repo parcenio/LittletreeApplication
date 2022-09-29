@@ -4,6 +4,7 @@ import br.com.pauloarcenio.base.Base;
 import br.com.pauloarcenio.bd.LittletreeBD;
 import br.com.pauloarcenio.entidades.Cliente;
 import br.com.pauloarcenio.entidades.Littletree;
+import br.com.pauloarcenio.entidades.Pedido;
 import br.com.pauloarcenio.entidades.Produto;
 import br.com.pauloarcenio.enums.TipoLittle;
 import java.sql.Connection;
@@ -23,6 +24,7 @@ public class ProdutoDAO {
     private static final String DELETE_SQL = "Delete from produtos "
             + "where id = %d";
     private static final String SELECT_TODOS = "Select * from produtos";
+    private static final String SELECT_TODOS_PEDIDO = "Select * from pedido";
     private static final String SELECT_POR_ID = "Select * from produtos "
             + "where id = %d;";
     private static final String SELECT_POR_NOME = "Select * from produtos "
@@ -95,7 +97,7 @@ public class ProdutoDAO {
         }
         return retorno;
     }
-    
+
     public static Littletree getLittletreePorNome(String nomeLittle) {
         Littletree retorno = null;
         Connection con = LittletreeBD.conectar();
@@ -134,5 +136,24 @@ public class ProdutoDAO {
             System.exit(1);
         }
         return retorno;
+    }
+
+    public static void baixaEstoque(List<Pedido> lista) {
+        Connection con = LittletreeBD.conectar();
+        try {
+            ResultSet rs = con.createStatement().executeQuery(SELECT_TODOS_PEDIDO);
+            while (rs.next()) {
+                String nomeProduto = rs.getString("nomeProduto");
+                int quantidade = rs.getInt("quantidade");
+                Littletree little = ProdutoDAO.getLittletreePorNome(nomeProduto);
+                little.setQuantidade(little.getQuantidade() - quantidade);
+                ProdutoDAO.alterar(little);
+            }
+            LittletreeBD.desconectar(con);
+        } catch (SQLException e) {
+//            System.out.println(e.getLocalizedMessage());
+            Base.mensagem("Erro" + e);
+            System.exit(1);
+        }
     }
 }

@@ -12,9 +12,6 @@ import br.com.pauloarcenio.entidades.Pedido;
 import br.com.pauloarcenio.entidades.Produto;
 import br.com.pauloarcenio.entidades.Venda;
 import br.com.pauloarcenio.enums.TipoLittle;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -30,7 +27,6 @@ public class LittletreeGUI extends javax.swing.JFrame {
      */
     public LittletreeGUI() {
         initComponents();
-//        LittletreeBD.inicializarBD();
         jtValorTotal.setEditable(false);
         jtNomeClientePedido.setEditable(false);
         LittletreeBD.limparTabelaPedido();
@@ -140,8 +136,6 @@ public class LittletreeGUI extends javax.swing.JFrame {
             jtValorTotal.setText(valorTotal);
         }
     }
-
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -842,24 +836,27 @@ public class LittletreeGUI extends javax.swing.JFrame {
         if (jtbClientes.isRowSelected(selecionado) || !jtNomeClientePedido.getText().isEmpty()) {
 
             Littletree littlePedido = ProdutoDAO.getLittletreePorNome(nomeProduto);
-            Pedido pedido = new Pedido();
+            Pedido pedido;
 
-//            boolean existe = PedidoDAO.existeProdutoPedido(littlePedido.getNome());
-//            if (existe) {
-//                pedido = PedidoDAO.getPedidoPorNomeProduto(littlePedido.getNome());
-//                pedido.setQuantidade();
-//                PedidoDAO.alterar(pedido);
-//                atualiza();
-//            } else {
-            pedido.setNomeProduto(littlePedido.getNome());
-            pedido.setQuantidade();
-            pedido.setValor(littlePedido.getValor());
-            PedidoDAO.inserir(pedido);
-            atualiza();
-            retornaValorTotalPedido();
-        } else {
+            boolean existe = PedidoDAO.existeProdutoPedido(littlePedido.getNome());
+            if (existe) {
+                pedido = PedidoDAO.getPedidoPorNomeProduto(littlePedido.getNome());
+                pedido.setQuantidade();
+                pedido.setValor(littlePedido.getValor());
+                PedidoDAO.alterar(pedido);
+                atualiza();
+                retornaValorTotalPedido();
+            } else {
+                pedido = new Pedido();
+                pedido.setNomeProduto(littlePedido.getNome());
+                pedido.setQuantidade();
+                pedido.setValor(littlePedido.getValor());
+                PedidoDAO.inserir(pedido);
+                atualiza();
+                retornaValorTotalPedido();
+            }
+        } else
             Base.mensagem("Selecione um cliente!");
-        }     
     }//GEN-LAST:event_jbAdicionarActionPerformed
 
     private void jbRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbRemoverActionPerformed
@@ -893,7 +890,8 @@ public class LittletreeGUI extends javax.swing.JFrame {
         cliente.setVendas(vendasClientes);
         ClienteDAO.alterar(cliente);
         VendasDAO.inserir(venda);
-        atualiza();
+        //DAR BAIXA NO ESTOQUE
+        ProdutoDAO.baixaEstoque(listaPedido);
         JOptionPane.showMessageDialog(null, " VENDA REALIZADA COM SUCESSO!");
         LittletreeBD.limparTabelaPedido();
         atualiza();
@@ -928,27 +926,23 @@ public class LittletreeGUI extends javax.swing.JFrame {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
 
-}
+                }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(LittletreeGUI.class  
+            java.util.logging.Logger.getLogger(LittletreeGUI.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(LittletreeGUI.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
-} catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(LittletreeGUI.class  
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(LittletreeGUI.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-} catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(LittletreeGUI.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-
-} catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(LittletreeGUI.class  
-
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(LittletreeGUI.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
