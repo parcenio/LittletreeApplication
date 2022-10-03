@@ -14,5 +14,5 @@ Aplicação em java que permite realizar um pedido/efetuar uma venda, crud clien
 
 ## Próximos Passos ##
 
-[] Melhoria da Interface Gráfica
-[] Implementar FACADE PATTERN
+1. [] Melhoria da Interface Gráfica
+2. [] Implementar FACADE PATTERN
