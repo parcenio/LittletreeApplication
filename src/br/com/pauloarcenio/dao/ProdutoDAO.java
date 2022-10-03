@@ -2,7 +2,6 @@ package br.com.pauloarcenio.dao;
 
 import br.com.pauloarcenio.base.Base;
 import br.com.pauloarcenio.bd.LittletreeBD;
-import br.com.pauloarcenio.entidades.Cliente;
 import br.com.pauloarcenio.entidades.Littletree;
 import br.com.pauloarcenio.entidades.Pedido;
 import br.com.pauloarcenio.entidades.Produto;
@@ -74,6 +73,28 @@ public class ProdutoDAO {
             System.exit(1);
         }
         return lista;
+    }
+
+    public static boolean existeProduto(String nomeProduto) {
+        boolean retorno = false;
+        Connection con = LittletreeBD.conectar();
+        try {
+            String sql = String.format(SELECT_POR_NOME, nomeProduto);
+            ResultSet rs = con.createStatement().executeQuery(sql);
+            if (rs.next() == true) {
+                String nome = rs.getString("nome");
+                if (nome.equals(nomeProduto)) {
+                    retorno = true;
+                }
+            }
+            LittletreeBD.desconectar(con);
+
+        } catch (SQLException e) {
+//            System.out.println(e.getLocalizedMessage());
+            Base.mensagem("Erro" + e);
+            System.exit(1);
+        }
+        return retorno;
     }
 
     public static Littletree getLittletreePorID(int idPesquisa) {
@@ -155,5 +176,16 @@ public class ProdutoDAO {
             Base.mensagem("Erro" + e);
             System.exit(1);
         }
+    }
+    
+    //IMPLEMENTANDO CONSULTA ESTOQUE, PARA PODER ADICIONAR MAIS PRODUTO OU NÃO!
+    public static boolean consultaEstoque(Produto produto){
+        boolean retorno = false;
+        int qntdPedido = PedidoDAO.qtdProdutoPedido(produto.getNome());
+        Littletree littleEstoque = ProdutoDAO.getLittletreePorNome(produto.getNome());       
+        if (littleEstoque.getQuantidade() > qntdPedido){
+            retorno = true;
+        }        
+        return retorno;
     }
 }

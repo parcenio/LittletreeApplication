@@ -9,13 +9,10 @@ import br.com.pauloarcenio.dao.VendasDAO;
 import br.com.pauloarcenio.entidades.Cliente;
 import br.com.pauloarcenio.entidades.Littletree;
 import br.com.pauloarcenio.entidades.Pedido;
-import br.com.pauloarcenio.entidades.Produto;
 import br.com.pauloarcenio.entidades.Venda;
 import br.com.pauloarcenio.enums.TipoLittle;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -131,8 +128,8 @@ public class LittletreeGUI extends javax.swing.JFrame {
     private void retornaValorTotalPedido() {
         List<Pedido> listaPedidos = PedidoDAO.selecionarTodos();
         if (!listaPedidos.isEmpty()) {
-            int valor = PedidoDAO.valorTotal();
-            String valorTotal = String.valueOf(valor);
+            double valor = PedidoDAO.valorTotal();
+            String valorTotal = String.valueOf(valor).replace(".", ",");
             jtValorTotal.setText(valorTotal);
         }
     }
@@ -247,35 +244,48 @@ public class LittletreeGUI extends javax.swing.JFrame {
                 jtNomeClientePedidoFocusGained(evt);
             }
         });
+        jtNomeClientePedido.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtNomeClientePedidoMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jtNomeClientePedidoMouseEntered(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGap(100, 100, 100)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jtNomeClientePedido, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jlCliente))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jcProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jbAdicionar))
-                            .addComponent(jbFinalizarPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jbRemover))
-                    .addComponent(jlProduto))
-                .addGap(67, 67, 67))
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(218, 218, 218)
                 .addComponent(jlValorTotal)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jtValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jtNomeClientePedido, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlCliente))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jlProduto)
+                        .addGap(328, 328, 328))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jcProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(jbAdicionar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jbRemover)
+                                .addGap(206, 206, 206))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(jbFinalizarPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -284,21 +294,18 @@ public class LittletreeGUI extends javax.swing.JFrame {
                     .addComponent(jlValorTotal)
                     .addComponent(jtValorTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jlCliente)
-                            .addComponent(jlProduto))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jcProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jtNomeClientePedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jbAdicionar)
-                        .addComponent(jbRemover)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlCliente)
+                    .addComponent(jlProduto))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jcProdutos, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtNomeClientePedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbAdicionar)
+                    .addComponent(jbRemover))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jbFinalizarPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -308,7 +315,7 @@ public class LittletreeGUI extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 579, Short.MAX_VALUE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -334,6 +341,11 @@ public class LittletreeGUI extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jtbClientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtbClientesMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jtbClientes);
 
         jtContatoCliente.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -448,6 +460,11 @@ public class LittletreeGUI extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jtbProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtbProdutosMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(jtbProdutos);
 
         jLabel1.setText("Nome");
@@ -672,7 +689,8 @@ public class LittletreeGUI extends javax.swing.JFrame {
             ClienteDAO.inserir(cliente);
             atualiza();
         }
-
+        jtNomeCliente.setText("");
+        jtContatoCliente.setText("");
     }//GEN-LAST:event_jbAdicionarClienteActionPerformed
 
     private void jbRemoverClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbRemoverClienteActionPerformed
@@ -685,7 +703,8 @@ public class LittletreeGUI extends javax.swing.JFrame {
         } else {
             Base.mensagem("Selecione um cliente para apagar.");
         }
-
+        jtNomeCliente.setText("");
+        jtContatoCliente.setText("");
     }//GEN-LAST:event_jbRemoverClienteActionPerformed
 
     private void jbAlterarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAlterarClienteActionPerformed
@@ -697,60 +716,42 @@ public class LittletreeGUI extends javax.swing.JFrame {
 
             String nome = jtNomeCliente.getText();
             String contato = jtContatoCliente.getText();
-            cliente.setNome(nome);
-            cliente.setContato(contato);
-            ClienteDAO.alterar(cliente);
-            atualiza();
+            if (!nome.isEmpty() && !contato.isEmpty()) {
+                cliente.setNome(nome);
+                cliente.setContato(contato);
+                ClienteDAO.alterar(cliente);
+                atualiza();
+            } else {
+                Base.mensagem("Insira os dados para alterar!");
+            }
         } else {
             Base.mensagem("Selecione um cliente para alterar.");
         }
+        jtNomeCliente.setText("");
+        jtContatoCliente.setText("");
     }//GEN-LAST:event_jbAlterarClienteActionPerformed
 
     private void jtNomeClienteFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtNomeClienteFocusGained
-        int selecionado = jtbClientes.getSelectedRow();
-        if (jtbClientes.isRowSelected(selecionado)) {
-            String idString = (String) jtbClientes.getValueAt(selecionado, 0);
-            byte id = Byte.parseByte(idString);
-
-            Cliente cliente = ClienteDAO.getClientePorID(id);
-            jtNomeCliente.setText(cliente.getNome());
-            jtContatoCliente.setText(cliente.getContato());
-        }
-
 
     }//GEN-LAST:event_jtNomeClienteFocusGained
 
     private void jtNomeClientePedidoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtNomeClientePedidoFocusGained
-        int selecionado = jtbClientes.getSelectedRow();
-        if (jtbClientes.isRowSelected(selecionado)) {
-            String idString = (String) jtbClientes.getValueAt(selecionado, 0);
-            byte id = Byte.parseByte(idString);
-            Cliente cliente = ClienteDAO.getClientePorID(id);
-            jtNomeClientePedido.setText(cliente.getNome());
-        }
 
     }//GEN-LAST:event_jtNomeClientePedidoFocusGained
 
     private void jbAdicionarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAdicionarProdutoActionPerformed
         String nome = jtNomeProduto.getText();
-        TipoLittle tipo = TipoLittle.getTipoPorNome(jcTipoProduto.getSelectedItem().toString());
-        int valor = Integer.parseInt(jtValorProduto.getText());
-        int quantidade = Integer.parseInt(jtQuantidadeProduto.getText());
-        Littletree littleNew = new Littletree(nome, tipo, valor, quantidade);
-        ProdutoDAO.inserir(littleNew);
-        atualiza();
-        popularComboProdutoPedido();
-
-//        String nome = jtNomeCliente.getText();
-//        String contato = jtContatoCliente.getText();
-//        boolean existe = ClienteDAO.existeCliente(nome, contato);
-//        if (existe) {
-//            JOptionPane.showMessageDialog(null, "Já existe esse cliente!");
-//        } else {
-//            Cliente cliente = new Cliente(nome, contato);
-//            ClienteDAO.inserir(cliente);
-//            atualiza();
-//        }
+        if (!ProdutoDAO.existeProduto(nome)) {
+            TipoLittle tipo = TipoLittle.getTipoPorNome(jcTipoProduto.getSelectedItem().toString());
+            int valor = Integer.parseInt(jtValorProduto.getText());
+            int quantidade = Integer.parseInt(jtQuantidadeProduto.getText());
+            Littletree littleNew = new Littletree(nome, tipo, valor, quantidade);
+            ProdutoDAO.inserir(littleNew);
+            atualiza();
+            popularComboProdutoPedido();
+        } else {
+            Base.mensagem("Já existe esse produto!");
+        }
     }//GEN-LAST:event_jbAdicionarProdutoActionPerformed
 
     private void jbDeletarProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbDeletarProdutoActionPerformed
@@ -790,39 +791,14 @@ public class LittletreeGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jbAlterarProdutoActionPerformed
 
     private void jtNomeProdutoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtNomeProdutoFocusGained
-        int selecionado = jtbProdutos.getSelectedRow();
-        if (jtbProdutos.isRowSelected(selecionado)) {
-            String idString = (String) jtbProdutos.getValueAt(selecionado, 0);
-            byte id = Byte.parseByte(idString);
-
-            Littletree little = ProdutoDAO.getLittletreePorID(id);
-            jtNomeProduto.setText(little.getNome());
-        }
-
 
     }//GEN-LAST:event_jtNomeProdutoFocusGained
 
     private void jtValorProdutoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtValorProdutoFocusGained
-        int selecionado = jtbProdutos.getSelectedRow();
-        if (jtbProdutos.isRowSelected(selecionado)) {
-            String idString = (String) jtbProdutos.getValueAt(selecionado, 0);
-            byte id = Byte.parseByte(idString);
-
-            Littletree little = ProdutoDAO.getLittletreePorID(id);
-            jtValorProduto.setText(String.valueOf(little.getValor()));
-        }
 
     }//GEN-LAST:event_jtValorProdutoFocusGained
 
     private void jtQuantidadeProdutoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtQuantidadeProdutoFocusGained
-        int selecionado = jtbProdutos.getSelectedRow();
-        if (jtbProdutos.isRowSelected(selecionado)) {
-            String idString = (String) jtbProdutos.getValueAt(selecionado, 0);
-            byte id = Byte.parseByte(idString);
-
-            Littletree little = ProdutoDAO.getLittletreePorID(id);
-            jtQuantidadeProduto.setText(String.valueOf(little.getQuantidade()));
-        }
 
     }//GEN-LAST:event_jtQuantidadeProdutoFocusGained
 
@@ -834,26 +810,31 @@ public class LittletreeGUI extends javax.swing.JFrame {
         String nomeProduto = jcProdutos.getSelectedItem().toString();
         int selecionado = jtbClientes.getSelectedRow();
         if (jtbClientes.isRowSelected(selecionado) || !jtNomeClientePedido.getText().isEmpty()) {
-
             Littletree littlePedido = ProdutoDAO.getLittletreePorNome(nomeProduto);
             Pedido pedido;
-
             boolean existe = PedidoDAO.existeProdutoPedido(littlePedido.getNome());
+            boolean existeEstoque = ProdutoDAO.consultaEstoque(littlePedido);
             if (existe) {
-                pedido = PedidoDAO.getPedidoPorNomeProduto(littlePedido.getNome());
-                pedido.setQuantidade();
-                pedido.setValor(littlePedido.getValor());
-                PedidoDAO.alterar(pedido);
-                atualiza();
-                retornaValorTotalPedido();
+                if (existeEstoque) {
+                    pedido = PedidoDAO.getPedidoPorNomeProduto(littlePedido.getNome());
+                    pedido.setQuantidade();
+                    pedido.setValor(littlePedido.getValor());
+                    PedidoDAO.alterar(pedido);
+                    atualiza();
+                    retornaValorTotalPedido();
+                } else Base.mensagem("Não tem mais em estoque!");
+                
             } else {
-                pedido = new Pedido();
-                pedido.setNomeProduto(littlePedido.getNome());
-                pedido.setQuantidade();
-                pedido.setValor(littlePedido.getValor());
-                PedidoDAO.inserir(pedido);
-                atualiza();
-                retornaValorTotalPedido();
+                if (existeEstoque) {
+                    pedido = new Pedido();
+                    pedido.setNomeProduto(littlePedido.getNome());
+                    pedido.setQuantidade();
+                    pedido.setValor(littlePedido.getValor());
+                    PedidoDAO.inserir(pedido);
+                    atualiza();
+                    retornaValorTotalPedido();
+                } else Base.mensagem("Não tem mais em estoque!");
+
             }
         } else
             Base.mensagem("Selecione um cliente!");
@@ -877,25 +858,27 @@ public class LittletreeGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jtValorTotalFocusGained
 
     private void jbFinalizarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbFinalizarPedidoActionPerformed
-        String nomeCliente = jtNomeClientePedido.getText();
-        Cliente cliente = ClienteDAO.getClientePorNome(nomeCliente);
-        int vendasClientes = cliente.getVendas() + 1;
         List<Pedido> listaPedido = PedidoDAO.selecionarTodos();
-        String descricao = listaPedido.toString();
-        String valor = String.valueOf(jtValorTotal.getText());
-        int valorTotal = Integer.parseInt(valor);
-        LocalDate agora = LocalDate.now();
-        agora.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        Venda venda = new Venda(cliente, descricao, valorTotal, agora);
-        cliente.setVendas(vendasClientes);
-        ClienteDAO.alterar(cliente);
-        VendasDAO.inserir(venda);
-        //DAR BAIXA NO ESTOQUE
-        ProdutoDAO.baixaEstoque(listaPedido);
-        JOptionPane.showMessageDialog(null, " VENDA REALIZADA COM SUCESSO!");
-        LittletreeBD.limparTabelaPedido();
-        atualiza();
-
+        if (!listaPedido.isEmpty()) {
+            String nomeCliente = jtNomeClientePedido.getText();
+            Cliente cliente = ClienteDAO.getClientePorNome(nomeCliente);
+            int vendasClientes = cliente.getVendas() + 1;
+            String descricao = listaPedido.toString();
+            String valor = jtValorTotal.getText().replace(",", ".");
+            double valorTotal = Double.parseDouble(valor);
+            LocalDate agora = LocalDate.now();
+            agora.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            Venda venda = new Venda(cliente, descricao, (int) valorTotal, agora);
+            cliente.setVendas(vendasClientes);
+            ClienteDAO.alterar(cliente);
+            VendasDAO.inserir(venda);
+            ProdutoDAO.baixaEstoque(listaPedido);
+            JOptionPane.showMessageDialog(null, " VENDA REALIZADA COM SUCESSO!");
+            LittletreeBD.limparTabelaPedido();
+            atualiza();
+            jtNomeClientePedido.setText("");
+        } else
+            Base.mensagem("Você não fez o pedido!");
     }//GEN-LAST:event_jbFinalizarPedidoActionPerformed
 
     private void jtContatoClienteFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtContatoClienteFocusGained
@@ -910,6 +893,42 @@ public class LittletreeGUI extends javax.swing.JFrame {
         VendasDAO.apagar(venda);
         atualiza();
     }//GEN-LAST:event_jbDeletarVendasActionPerformed
+
+    private void jtNomeClientePedidoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtNomeClientePedidoMouseClicked
+
+    }//GEN-LAST:event_jtNomeClientePedidoMouseClicked
+
+    private void jtNomeClientePedidoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtNomeClientePedidoMouseEntered
+
+    }//GEN-LAST:event_jtNomeClientePedidoMouseEntered
+
+    private void jtbClientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtbClientesMouseClicked
+        int selecionado = jtbClientes.getSelectedRow();
+        if (jtbClientes.isRowSelected(selecionado)) {
+            String idString = (String) jtbClientes.getValueAt(selecionado, 0);
+            byte id = Byte.parseByte(idString);
+            Cliente cliente = ClienteDAO.getClientePorID(id);
+            jtNomeClientePedido.setText(cliente.getNome());
+
+            jtNomeCliente.setText(cliente.getNome());
+            jtContatoCliente.setText(cliente.getContato());
+
+        }
+    }//GEN-LAST:event_jtbClientesMouseClicked
+
+    private void jtbProdutosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtbProdutosMouseClicked
+        int selecionado = jtbProdutos.getSelectedRow();
+        if (jtbProdutos.isRowSelected(selecionado)) {
+            String idString = (String) jtbProdutos.getValueAt(selecionado, 0);
+            byte id = Byte.parseByte(idString);
+
+            Littletree little = ProdutoDAO.getLittletreePorID(id);
+            jtNomeProduto.setText(little.getNome());
+            jcTipoProduto.setSelectedIndex(little.getTipo().ordinal());
+            jtQuantidadeProduto.setText(String.valueOf(little.getQuantidade()));
+            jtValorProduto.setText(String.valueOf(little.getValor()));
+        }
+    }//GEN-LAST:event_jtbProdutosMouseClicked
 
     /**
      * @param args the command line arguments

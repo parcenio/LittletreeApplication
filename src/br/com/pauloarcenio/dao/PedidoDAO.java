@@ -2,10 +2,7 @@ package br.com.pauloarcenio.dao;
 
 import br.com.pauloarcenio.base.Base;
 import br.com.pauloarcenio.bd.LittletreeBD;
-import br.com.pauloarcenio.entidades.Littletree;
 import br.com.pauloarcenio.entidades.Pedido;
-import br.com.pauloarcenio.entidades.Produto;
-import br.com.pauloarcenio.enums.TipoLittle;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -116,6 +113,27 @@ public class PedidoDAO {
         return retorno;
     }
 
+    public static int qtdProdutoPedido(String nomeLittle) {
+        int retorno = 0;
+        Connection con = LittletreeBD.conectar();
+        try {
+            String sql = String.format(SELECT_POR_NOME, nomeLittle);
+            ResultSet rs = con.createStatement().executeQuery(sql);
+            if (rs.next() == true) {
+//                rs.next();
+                int quantidade = rs.getInt("quantidade");
+                retorno = quantidade;
+                LittletreeBD.desconectar(con);
+            }
+
+        } catch (SQLException e) {
+//            System.out.println(e.getLocalizedMessage());
+            Base.mensagem("Erro" + e);
+            System.exit(1);
+        }
+        return retorno;
+    }
+
     public static Pedido getPedidoPorNomeProduto(String nomeCliente) {
         Pedido retorno = null;
         Connection con = LittletreeBD.conectar();
@@ -137,14 +155,14 @@ public class PedidoDAO {
         return retorno;
     }
 
-    public static int valorTotal() {
-        int retorno = 0;
+    public static double valorTotal() {
+        double retorno = 0;
         Connection con = LittletreeBD.conectar();
         try {
             ResultSet rs = con.createStatement().executeQuery(SOMA_VALORES);
             rs.next();
             int valorTotal = rs.getInt("sum(valor)");
-            retorno = valorTotal;
+            retorno = (double) valorTotal;
 
             LittletreeBD.desconectar(con);
         } catch (SQLException e) {
@@ -155,8 +173,8 @@ public class PedidoDAO {
 
         return retorno;
     }
-    
-    public static void limparPedidos(){
+
+    public static void limparPedidos() {
         Connection con = LittletreeBD.conectar();
         try {
             ResultSet rs = con.createStatement().executeQuery(LIMPAR_TABELA);
