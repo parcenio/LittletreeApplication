@@ -9,6 +9,7 @@ import br.com.pauloarcenio.dao.VendasDAO;
 import br.com.pauloarcenio.entidades.Cliente;
 import br.com.pauloarcenio.entidades.Littletree;
 import br.com.pauloarcenio.entidades.Pedido;
+import br.com.pauloarcenio.entidades.Usuario;
 import br.com.pauloarcenio.entidades.Venda;
 import br.com.pauloarcenio.enums.TipoLittle;
 import java.time.LocalDate;
@@ -24,13 +25,21 @@ public class LittletreeGUI extends javax.swing.JFrame {
      */
     public LittletreeGUI() {
         initComponents();
-        jtValorTotal.setEditable(false);
-        jtNomeClientePedido.setEditable(false);
+        telaLogin();
         LittletreeBD.limparTabelaPedido();
+        atualiza();
         popularComboProdutoPedido();
         popularComboProdutos();
-        atualiza();
+        jtValorTotal.setEditable(false);
+        jtNomeClientePedido.setEditable(false);
 
+    }
+
+    public void telaLogin() {
+        TelaLogin login = new TelaLogin(this, true);
+        login.setVisible(true);
+        Usuario.fecharPrograma(login.entrarLogin);
+        JOptionPane.showMessageDialog(null, "Bem vindo! Usuário Teste!");
     }
 
     private void atualiza() {
@@ -822,8 +831,10 @@ public class LittletreeGUI extends javax.swing.JFrame {
                     PedidoDAO.alterar(pedido);
                     atualiza();
                     retornaValorTotalPedido();
-                } else Base.mensagem("Não tem mais em estoque!");
-                
+                } else {
+                    Base.mensagem("Não tem mais em estoque!");
+                }
+
             } else {
                 if (existeEstoque) {
                     pedido = new Pedido();
@@ -833,7 +844,9 @@ public class LittletreeGUI extends javax.swing.JFrame {
                     PedidoDAO.inserir(pedido);
                     atualiza();
                     retornaValorTotalPedido();
-                } else Base.mensagem("Não tem mais em estoque!");
+                } else {
+                    Base.mensagem("Não tem mais em estoque!");
+                }
 
             }
         } else

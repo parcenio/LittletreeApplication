@@ -38,13 +38,18 @@ public class LittletreeBD {
                 + "quantidade int not null,"
                 + "valor int not null)";
         execute(con, sql);
+        sql = "Create table if not exists usuarios"
+                + "(id int not null auto_increment primary key, "
+                + "login varchar(20) not null,"
+                + "senha varchar(25) not null)";
+        execute(con, sql);
         desconectar(con);
     }
 
     public static Connection conectar() {
         Connection con = null;
         final String USUARIO = "root";
-        final String SENHA = "arcenio1213";
+        final String SENHA = "858793";
         final String URL = "jdbc:mysql://localhost/littletree";
         try {
             con = DriverManager.getConnection(URL,
