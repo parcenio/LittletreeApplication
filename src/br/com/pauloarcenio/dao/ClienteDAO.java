@@ -66,6 +66,27 @@ public class ClienteDAO {
         }
         return lista;
     }
+    public static List<Cliente> filtrarCliente(String nomeCliente) {
+        List<Cliente> lista = new ArrayList<>();
+        Connection con = LittletreeBD.conectar();
+        try {
+            String sql = String.format(SELECT_POR_NOME, nomeCliente);
+            ResultSet rs = con.createStatement().executeQuery(sql);
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String nome = rs.getString("nome").trim().toLowerCase();
+                String contato = rs.getString("contato");
+                int vendas = rs.getInt("vendas");
+                lista.add(new Cliente(id, nome, contato, vendas));
+            }
+            LittletreeBD.desconectar(con);
+        } catch (SQLException e) {
+//            System.out.println(e.getLocalizedMessage());
+            Base.mensagem("Erro" + e);
+            System.exit(1);
+        }
+        return lista;
+    }
 
     public static Cliente getClientePorID(int idPesquisa) {
         Cliente retorno = null;

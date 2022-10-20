@@ -1,18 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package br.com.pauloarcenio.gui;
 
-import br.com.pauloarcenio.bd.LittletreeBD;
-import java.util.List;
-import javax.swing.ImageIcon;
+
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author binho
- */
+
 public class TelaLogin extends javax.swing.JDialog {
 
     boolean entrarLogin = false;
@@ -48,16 +40,20 @@ public class TelaLogin extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Tela de Login");
-        setMaximumSize(new java.awt.Dimension(500, 300));
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setIconImage(null);
+        setLocation(new java.awt.Point(500, 200));
         setMinimumSize(new java.awt.Dimension(500, 300));
-        setPreferredSize(new java.awt.Dimension(500, 300));
         getContentPane().setLayout(null);
 
         jLayeredPane1.setToolTipText("Tela de Login");
+        jLayeredPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jLayeredPane1.setMinimumSize(new java.awt.Dimension(500, 300));
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setText("Login :");
 
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel3.setText("Senha :");
 
         jlLogin.addActionListener(new java.awt.event.ActionListener() {
@@ -66,6 +62,7 @@ public class TelaLogin extends javax.swing.JDialog {
             }
         });
 
+        jButton1.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         jButton1.setText("Entrar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -74,7 +71,9 @@ public class TelaLogin extends javax.swing.JDialog {
         });
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/com/pauloarcenio/images/imgTelaLogin2.png"))); // NOI18N
+        jLabel1.setToolTipText("");
         jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         jLayeredPane1.setLayer(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jLayeredPane1.setLayer(jLabel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -104,7 +103,7 @@ public class TelaLogin extends javax.swing.JDialog {
                     .addGroup(jLayeredPane1Layout.createSequentialGroup()
                         .addGap(330, 330, 330)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(64, 70, Short.MAX_VALUE))
+                .addGap(40, 40, Short.MAX_VALUE))
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jLayeredPane1Layout.setVerticalGroup(
@@ -131,10 +130,11 @@ public class TelaLogin extends javax.swing.JDialog {
         );
 
         getContentPane().add(jLayeredPane1);
-        jLayeredPane1.setBounds(0, 0, 540, 330);
+        jLayeredPane1.setBounds(0, 0, 510, 310);
         jLayeredPane1.getAccessibleContext().setAccessibleName("Tela de Login");
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jlLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jlLoginActionPerformed
@@ -143,11 +143,10 @@ public class TelaLogin extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-//        List<Usuario> usuario;
-//        usuario = UsuarioDAO.selecionarTodos();
+        char[] senhaUser = jlSenha.getPassword();
+        String senhaString = String.valueOf(senhaUser).trim().toLowerCase();
         boolean userExist = false;
-//        for (Usuario user : usuario) {
-        if (jlLogin.getText().equals("usuario") && jlSenha.getText().equals("1234")) {
+        if (jlLogin.getText().equals("usuario") && senhaString.equals("1234")) {
             nomeUsuario = String.format(jlLogin.getText());
             entrarLogin = true;
             userExist = true;
@@ -188,10 +187,8 @@ public class TelaLogin extends javax.swing.JDialog {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new TelaLogin().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new TelaLogin().setVisible(true);
         });
     }
 
