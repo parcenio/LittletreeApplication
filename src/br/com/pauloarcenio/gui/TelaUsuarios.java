@@ -6,22 +6,18 @@ import br.com.pauloarcenio.entidades.Usuario;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.ImageIcon;
 
 public class TelaUsuarios extends javax.swing.JDialog {
 
-    TelaInicio inicio = new TelaInicio();
-
     /**
      * Creates new form TelaUsuarios
+     * @param parent
+     * @param modal
      */
-    public TelaUsuarios() {
-        initComponents();
-        atualizaUsuarios();
-    }
-
     public TelaUsuarios(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        boolean entrarUser = inicio.senhaADM();
+        boolean entrarUser = TelaInicio.senhaADM();
         if (entrarUser) {
             initComponents();
             atualizaUsuarios();
@@ -71,6 +67,7 @@ public class TelaUsuarios extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gerenciar Usuários");
+        setIconImage(new ImageIcon(this.getClass().getResource("/br/com/pauloarcenio/images/padraologo.png")).getImage());
         setMinimumSize(new java.awt.Dimension(600, 400));
 
         jtbUsuarios.setModel(new javax.swing.table.DefaultTableModel(
@@ -168,7 +165,7 @@ public class TelaUsuarios extends javax.swing.JDialog {
     private void jbCadastrarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCadastrarUsuarioActionPerformed
         String login = jtLogin.getText().trim().toLowerCase();
         String senha = jtSenha.getText().trim().toLowerCase();
-        boolean retornoSenha = inicio.senhaADM();
+        boolean retornoSenha = TelaInicio.senhaADM();
         if (retornoSenha) {
             Usuario user = new Usuario(login, senha);
             UsuarioDAO.inserir(user);
@@ -186,7 +183,7 @@ public class TelaUsuarios extends javax.swing.JDialog {
         if (jtbUsuarios.isRowSelected(selecionado)) {
             String idString = (String) jtbUsuarios.getValueAt(selecionado, 0);
             byte id = Byte.parseByte(idString);
-            boolean retornoSenha = inicio.senhaADM();
+            boolean retornoSenha = TelaInicio.senhaADM();
             if (retornoSenha) {
                 UsuarioDAO.remover(UsuarioDAO.selecionaPeloID(id));
                 atualizaUsuarios();
@@ -206,7 +203,7 @@ public class TelaUsuarios extends javax.swing.JDialog {
             String idString = (String) jtbUsuarios.getValueAt(selecionado, 0);
             byte id = Byte.parseByte(idString);
             Usuario user = (UsuarioDAO.selecionaPeloID(id));
-            boolean retornoSenha = inicio.senhaADM();
+            boolean retornoSenha = TelaInicio.senhaADM();
             if (retornoSenha) {
                 String login = jtLogin.getText();
                 String senha = jtSenha.getText();
@@ -270,10 +267,15 @@ public class TelaUsuarios extends javax.swing.JDialog {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new TelaUsuarios().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+           TelaUsuarios dialog = new TelaUsuarios(new javax.swing.JFrame(), true);
+            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent e) {
+                    System.exit(0);
+                }
+            });
+            dialog.setVisible(true);
         });
     }
 

@@ -1,24 +1,20 @@
-
 package br.com.pauloarcenio.gui;
 
-
+import br.com.pauloarcenio.bd.LittletreeBD;
+import br.com.pauloarcenio.dao.UsuarioDAO;
+import br.com.pauloarcenio.entidades.Usuario;
 import javax.swing.JOptionPane;
-
+import javax.swing.ImageIcon;
 
 public class TelaLogin extends javax.swing.JDialog {
 
     boolean entrarLogin = false;
     String nomeUsuario = null;
 
-    public TelaLogin() {
-        initComponents();
-
-    }
-
     public TelaLogin(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-//        LittletreeBD.inicializarBD();
+        LittletreeBD.inicializarBD();
     }
 
     /**
@@ -41,7 +37,7 @@ public class TelaLogin extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Tela de Login");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        setIconImage(null);
+        setIconImage(new ImageIcon(this.getClass().getResource("/br/com/pauloarcenio/images/padraologo.png")).getImage());
         setLocation(new java.awt.Point(500, 200));
         setMinimumSize(new java.awt.Dimension(500, 300));
         getContentPane().setLayout(null);
@@ -145,16 +141,27 @@ public class TelaLogin extends javax.swing.JDialog {
 
         char[] senhaUser = jlSenha.getPassword();
         String senhaString = String.valueOf(senhaUser).trim().toLowerCase();
-        boolean userExist = false;
-        if (jlLogin.getText().equals("usuario") && senhaString.equals("1234")) {
-            nomeUsuario = String.format(jlLogin.getText());
-            entrarLogin = true;
-            userExist = true;
-            this.dispose();
+        String userLogin = jlLogin.getText().trim().toLowerCase();
+        boolean existe = UsuarioDAO.userExiste(userLogin);
+        if (existe) {
+            Usuario user = UsuarioDAO.selecionaPeloLogin(userLogin);
+            if (user.getLogin().trim().toLowerCase().equals(userLogin)) {
+                if (user.getSenha().trim().toLowerCase().equals(senhaString)) {
+                    nomeUsuario = userLogin;
+                    entrarLogin = true;
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "SENHA INVÁLIDA!", "ALERTA!", DISPOSE_ON_CLOSE);
+                    jlSenha.setText("");
+                    jlSenha.grabFocus();
+                }
+            }
         } else {
-            JOptionPane.showMessageDialog(null, "Login ou senha são inválidos");
+            JOptionPane.showMessageDialog(null, "Login ou senha são inválidos", "ALERTA!", DISPOSE_ON_CLOSE);
+            jlSenha.setText("");
+            jlLogin.setText("");
+            jlLogin.grabFocus();
         }
-
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -188,7 +195,14 @@ public class TelaLogin extends javax.swing.JDialog {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new TelaLogin().setVisible(true);
+            TelaLogin dialog = new TelaLogin(new javax.swing.JFrame(), true);
+            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent e) {
+                    System.exit(0);
+                }
+            });
+            dialog.setVisible(true);
         });
     }
 

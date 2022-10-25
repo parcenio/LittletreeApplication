@@ -61,7 +61,6 @@ public class VendasDAO {
             }
             LittletreeBD.desconectar(con);
         } catch (SQLException e) {
-//            System.out.println(e.getLocalizedMessage());
             Base.mensagem("Erro" + e);
             System.exit(1);
         }
@@ -85,7 +84,6 @@ public class VendasDAO {
             retorno = new Venda(id, cliente, descricao, valorTotal, data);
             LittletreeBD.desconectar(con);
         } catch (SQLException e) {
-//            System.out.println(e.getLocalizedMessage());
             Base.mensagem("Erro" + e);
             System.exit(1);
         }
@@ -113,7 +111,6 @@ public class VendasDAO {
             }
             LittletreeBD.desconectar(con);
         } catch (SQLException e) {
-//            System.out.println(e.getLocalizedMessage());
             Base.mensagem("Erro" + e);
             System.exit(1);
         }

@@ -1,8 +1,7 @@
-
 package br.com.pauloarcenio.gui;
 
 import javax.swing.JOptionPane;
-
+import javax.swing.ImageIcon;
 
 public class TelaSenhaADM extends javax.swing.JDialog {
 
@@ -14,7 +13,7 @@ public class TelaSenhaADM extends javax.swing.JDialog {
      * @param parent
      * @param modal
      */
-    public  TelaSenhaADM(java.awt.Frame parent, boolean modal) {
+    public TelaSenhaADM(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
@@ -35,8 +34,7 @@ public class TelaSenhaADM extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Senha Administrativa");
-        setLocationByPlatform(true);
-        setMaximumSize(new java.awt.Dimension(410, 210));
+        setIconImage(new ImageIcon(this.getClass().getResource("/br/com/pauloarcenio/images/padraologo.png")).getImage());
         setMinimumSize(new java.awt.Dimension(425, 250));
         getContentPane().setLayout(null);
 

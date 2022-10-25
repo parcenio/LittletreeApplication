@@ -4,15 +4,12 @@ import br.com.pauloarcenio.base.Base;
 import br.com.pauloarcenio.dao.ProdutoDAO;
 import br.com.pauloarcenio.entidades.Littletree;
 import br.com.pauloarcenio.enums.TipoLittle;
-import java.awt.Frame;
 import java.util.List;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.ImageIcon;
 
 public class TelaProduto extends javax.swing.JDialog {
-
-    public final TelaInicio inicio = new TelaInicio();
 
     /**
      * Creates new form TelaProduto
@@ -27,17 +24,6 @@ public class TelaProduto extends javax.swing.JDialog {
         popularComboTipoProdutos();
     }
 
-//    public TelaProduto() {
-//        initComponents();
-//        atualizaProdutos();
-//        popularComboTipoProdutos();
-//    }
-
-    public boolean senhaADM() {
-        TelaSenhaADM adm = new TelaSenhaADM(this, true);
-        adm.setVisible(true);
-        return adm.confirmaSenha;
-    }
 
     public final void atualizaProdutos() {
         String[] cposProdutos = {"ID", "Nome", "Tipo", "Valor", "Quantidade"};
@@ -74,11 +60,6 @@ public class TelaProduto extends javax.swing.JDialog {
         }
     }
 
-//    public boolean senhaADM() {
-//        TelaSenhaADM adm = new TelaSenhaADM();
-//        adm.setVisible(true);
-//        return adm.confirmaSenha;
-//    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -94,17 +75,15 @@ public class TelaProduto extends javax.swing.JDialog {
         jcTipoProduto = new javax.swing.JComboBox<>();
         jtValorProduto = new javax.swing.JTextField();
         jtQuantidadeProduto = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jbAdicionarProduto = new javax.swing.JButton();
         jbAlterarProduto = new javax.swing.JButton();
         jbDeletarProduto = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gerenciar Produtos");
+        setIconImage(new ImageIcon(this.getClass().getResource("/br/com/pauloarcenio/images/padraologo.png")).getImage());
         setMinimumSize(new java.awt.Dimension(600, 400));
+        setResizable(false);
 
         jtbProdutos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -127,21 +106,19 @@ public class TelaProduto extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(jtbProdutos);
 
-        jcTipoProduto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jtNomeProduto.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Produto", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
+        jcTipoProduto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jcTipoProduto.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Tipo", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+
+        jtValorProduto.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Valor", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
         jtValorProduto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtValorProdutoActionPerformed(evt);
             }
         });
 
-        jLabel1.setText("Nome do Produto:");
-
-        jLabel2.setText("Categoria:");
-
-        jLabel3.setText("Valor:");
-
-        jLabel4.setText("Qtde:");
+        jtQuantidadeProduto.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Qtde", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 
         jbAdicionarProduto.setText("Add");
         jbAdicionarProduto.addActionListener(new java.awt.event.ActionListener() {
@@ -173,28 +150,19 @@ public class TelaProduto extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
+                        .addComponent(jtNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jcTipoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
+                        .addComponent(jcTipoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jtValorProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jtValorProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jtQuantidadeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jbAdicionarProduto)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jbAlterarProduto)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jbDeletarProduto)))
+                        .addComponent(jtQuantidadeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jbAdicionarProduto)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jbAlterarProduto)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jbDeletarProduto)
                         .addGap(0, 31, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -203,16 +171,10 @@ public class TelaProduto extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jtNomeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jcTipoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jcTipoProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtValorProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtQuantidadeProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbAdicionarProduto)
@@ -235,7 +197,7 @@ public class TelaProduto extends javax.swing.JDialog {
             String idString = (String) jtbProdutos.getValueAt(selecionado, 0);
             byte id = Byte.parseByte(idString);
             Littletree little = (ProdutoDAO.getLittletreePorID(id));
-            boolean retornoSenha = inicio.senhaADM();
+            boolean retornoSenha = TelaInicio.senhaADM();
             if (retornoSenha) {
                 String nome = jtNomeProduto.getText();
                 String tipo = jcTipoProduto.getSelectedItem().toString();
@@ -290,7 +252,7 @@ public class TelaProduto extends javax.swing.JDialog {
         int selecionado = jtbProdutos.getSelectedRow();
 
         if (jtbProdutos.isRowSelected(selecionado)) {
-            boolean retornoSenha = senhaADM();
+            boolean retornoSenha = TelaInicio.senhaADM();
             if (retornoSenha) {
                 String idString = (String) jtbProdutos.getValueAt(selecionado, 0);
                 byte id = Byte.parseByte(idString);
@@ -347,15 +309,11 @@ public class TelaProduto extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    javax.swing.JLabel jLabel1;
-    javax.swing.JLabel jLabel2;
-    javax.swing.JLabel jLabel3;
-    javax.swing.JLabel jLabel4;
     javax.swing.JScrollPane jScrollPane1;
     javax.swing.JButton jbAdicionarProduto;
     javax.swing.JButton jbAlterarProduto;
     javax.swing.JButton jbDeletarProduto;
-    private javax.swing.JComboBox<String> jcTipoProduto;
+    javax.swing.JComboBox<String> jcTipoProduto;
     javax.swing.JTextField jtNomeProduto;
     javax.swing.JTextField jtQuantidadeProduto;
     javax.swing.JTextField jtValorProduto;

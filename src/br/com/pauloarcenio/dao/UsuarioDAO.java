@@ -60,7 +60,7 @@ public class UsuarioDAO {
         return listaUsuarios;
     }
 
-    public static Usuario selecionaPeloNome(String nome) {
+    public static Usuario selecionaPeloLogin(String nome) {
         Usuario user = null;
         Connection con = LittletreeBD.conectar();
         try {
@@ -80,6 +80,26 @@ public class UsuarioDAO {
         }
 
         return user;
+    }
+
+    public static boolean userExiste(String nome) {
+        boolean retorno = false;
+        Connection con = LittletreeBD.conectar();
+        try {
+            String sql = String.format(SELECT_POR_NOME, nome);
+            ResultSet rs = con.createStatement().executeQuery(sql);
+            if (rs.next() == true) {
+                retorno = true;
+            }
+            
+            LittletreeBD.desconectar(con);
+
+        } catch (SQLException e) {
+            Base.mensagem("Erro" + e);
+            System.exit(1);
+        }
+
+        return retorno;
     }
 
     public static Usuario selecionaPeloID(int idUser) {

@@ -1,43 +1,29 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package br.com.pauloarcenio.gui;
 
-import br.com.pauloarcenio.dao.ClienteDAO;
 import br.com.pauloarcenio.dao.VendasDAO;
-import br.com.pauloarcenio.entidades.Cliente;
 import br.com.pauloarcenio.entidades.Venda;
 import static br.com.pauloarcenio.gui.TelaInicio.jtbVendasRealizadas;
 import java.util.List;
 import javax.swing.JOptionPane;
-import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
+import javax.swing.ImageIcon;
 
-/**
- *
- * @author binho
- */
 public class TelaVendas extends javax.swing.JDialog {
 
-//    private TableRowSorter tableRowSorter;
-    TelaInicio inicio = new TelaInicio();
 
     /**
      * Creates new form TelaVendas
+     * @param parent
+     * @param modal
      */
-    public TelaVendas() {
-        initComponents();
-    }
 
     public TelaVendas(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         atualizaVendas();
-//        this.tableRowSorter = new TableRowSorter(jtbVendas2.getModel());
-//        jtbVendas2.setRowSorter(this.tableRowSorter);
     }
+    
 
     public final void atualizaVendas() {
         String[] cposVendas = {"ID", "NomeCliente", "Descricao", "ValorTotal", "Data"};
@@ -79,6 +65,7 @@ public class TelaVendas extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gerenciar Vendas");
+        setIconImage(new ImageIcon(this.getClass().getResource("/br/com/pauloarcenio/images/padraologo.png")).getImage());
         setMinimumSize(new java.awt.Dimension(600, 400));
 
         jtbVendas2.setModel(new javax.swing.table.DefaultTableModel(
@@ -164,7 +151,7 @@ public class TelaVendas extends javax.swing.JDialog {
             String idString = (String) jtbVendas2.getValueAt(selecionado, 0);
             byte id = Byte.parseByte(idString);
             Venda venda = VendasDAO.getVendaPorID(id);
-            boolean retornoAdm = inicio.senhaADM();
+            boolean retornoAdm = TelaInicio.senhaADM();
             if (retornoAdm) {
                 VendasDAO.apagar(venda);
                 atualizaVendas();
@@ -213,7 +200,14 @@ public class TelaVendas extends javax.swing.JDialog {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new TelaVendas().setVisible(true);
+            TelaVendas dialog = new TelaVendas(new javax.swing.JFrame(), true);
+            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent e) {
+                    System.exit(0);
+                }
+            });
+            dialog.setVisible(true);
         });
     }
 
