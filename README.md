@@ -1,8 +1,8 @@
 # LittletreeApplication
-Controle das vendas/estoque de produtos Little trees.
+Controle das vendas/estoque de produtos Little trees. < PROJETO FINAL BRQ ENTRY POINT FORMAÇÃO JAVA />
 
 ## Sobre ##
-Aplicação em java que permite realizar um pedido/efetuar uma venda, crud clientes, crud produtos, registrar e excluir as vendas com conexão ao BD Mysql.
+Aplicação em java que permite realizar um pedido/efetuar uma venda, crud clientes, crud produtos, registrar e excluir as vendas com conexão ao BD Mysql, USO LOCAL.
 
 ## Aprendizados ##
 
@@ -14,5 +14,4 @@ Aplicação em java que permite realizar um pedido/efetuar uma venda, crud clien
 
 ## Próximos Passos ##
 
-1. Melhoria da Interface Gráfica
-2. Implementar FACADE PATTERN / Clean Code
+* -
